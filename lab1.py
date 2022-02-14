@@ -15,17 +15,6 @@ window.configure(bg='black')
 icon = PhotoImage(file='LOGO_UMNG.png')
 window.iconphoto(True,icon)
 
-# def draw(panel='',picture='',columna=0):
-#   picture = np.array(picture)
-#   picture = imutils.resize(picture, height=360)#380
-
-#   picture = Image.fromarray(picture)
-#   picture = ImageTk.PhotoImage(picture)
-
-#   panel = Label(image=picture)
-#   panel.image = picture
-#   panel.grid(column=columna,row=5,padx=5,pady=5)
-
 def choose_right_img():
   path = filedialog.askopenfilename(filetypes=[("image",".png"),("image",".jpeg"),("image",".jpg")])
 
@@ -38,7 +27,6 @@ def choose_right_img():
     imageR = Image.open(path,mode='r')
     brightness = ImageEnhance.Brightness(imageR)
     imageR = brightness.enhance(1.5)
-    # draw(panelA,imageR,1)
 
     imageArrayR = np.array(imageR)
     imageArrayR = imutils.resize(imageArrayR, height=360)#380
@@ -62,7 +50,6 @@ def choose_left_img():
     imageL = Image.open(path,mode='r')
     brightness = ImageEnhance.Brightness(imageL)
     imageL = brightness.enhance(1.5)
-    # draw(panelB,imageL,0)
 
     imageArrayL = np.array(imageL)
     imageArrayL = imutils.resize(imageArrayL, height=360)#380
@@ -86,18 +73,6 @@ def fullScreen(imagen):
   cv2.imshow("window", cv2.resize(imagen,(ancho,alto)))
   cv2.waitKey(0)
   cv2.destroyAllWindows()
-    
-def askMeSave():
-    MsgBox  = tk.messagebox.askyesno(title='Exit Application',message='Guardar la imagen?')
-    if MsgBox:
-      save_img()
-    else:
-      pass
-
-def save_img():
-  path = filedialog.asksaveasfile(mode='w', defaultextension=".png")
-  if path:
-    print_img.save(path.name)
 
 def anaglifo():
   global print_img
@@ -107,20 +82,12 @@ def anaglifo():
   cyan_img = ImageOps.colorize(gray_img_Left,'black', 'cyan')
   red_img = ImageOps.colorize(gray_img_Right,'black','red')
 
-  # draw(panelA,red_img,1)
-  # draw(panelB,cyan_img,0)
-
   blend = Image.blend(red_img,cyan_img,0.5)
   brightness = ImageEnhance.Brightness(blend)
   image_3d = brightness.enhance(1.5)
   img = np.array(image_3d)
-  # img = imutils.resize(img, height=380)
-  # im_comb = imutils.resize(img,width=ancho,height=alto,inter=cv2.INTER_AREA) #guardar
-  # print_img = Image.fromarray(im_comb)
   
   fullScreen(img)
-
-  askMeSave()
 
 def topDown():
   imgArrayR = np.array(imageR)
@@ -152,23 +119,10 @@ def cruzada():
   imagen_unida = cv2.hconcat([resizedR,resizedL])
   fullScreen(imagen_unida)
 
-# def anaglifo2():
-#   global panelA, panelB, panelC, imageR, imageL, print_img
-#   global red_img, cyan_img
-
-#   gray_img_Left  = imageL.convert('L')
-#   gray_img_Right  = imageR.convert('L')
-#   cyan_img = ImageOps.colorize(gray_img_Left,'black', 'cyan')
-#   red_img = ImageOps.colorize(gray_img_Right,'black','red')
-
-#   draw(panelA,red_img,1)
-#   draw(panelB,cyan_img,0)
-
 global panelA, panelB
 
 panelA = None
 panelB = None
-# cont = 0
 
 my_menu = tk.Menu(window)
 window.config(menu=my_menu)
@@ -177,7 +131,6 @@ file_menu = tk.Menu(my_menu, tearoff=0)
 my_menu.add_cascade(label="File", menu=file_menu)
 file_menu.add_command(label="Imagen Derecha", command=choose_right_img)
 file_menu.add_command(label="Imagen Izquierda", command=choose_left_img)
-# file_menu.add_command(label="Borrar Imagenes", command=clear)
 file_menu.add_separator()
 file_menu.add_command(label="Exit",command=window.quit)
 
